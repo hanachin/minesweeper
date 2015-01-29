@@ -10,7 +10,7 @@ type Map struct {
 	Cells []*Cell
 }
 
-func NewSquareMap(cols, rows int) *Map {
+func NewRectangleMap(cols, rows int) *Map {
 	m := new(Map)
 	m.Cells = make([]*Cell, cols * rows)
 	cells := make([][]Cell, rows)

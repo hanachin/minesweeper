@@ -12,6 +12,6 @@ func main() {
 	flag.Parse()
 
 	g := minesweeper.NewGame()
-	g.SetSquareMap(*width, *height, *bomb)
+	g.SetRectangleMap(*width, *height, *bomb)
 	g.Start()
 }

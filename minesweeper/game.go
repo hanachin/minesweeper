@@ -18,8 +18,8 @@ func NewGame() *Game {
 	return g
 }
 
-func (g *Game) SetSquareMap(cols, rows, bomb int) {
-	m := NewSquareMap(cols, rows)
+func (g *Game) SetRectangleMap(cols, rows, bomb int) {
+	m := NewRectangleMap(cols, rows)
 	m.PutBomb(bomb)
 	g.Bomb = bomb
 	g.Map = m
