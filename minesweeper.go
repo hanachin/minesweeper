@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"math/rand"
 	"time"
@@ -56,17 +57,16 @@ func (c *Cell) Show() {
 
 }
 
-func (c *Cell) Open() {
+func (c *Cell) Open() error {
 	if c.IsOpened {
-		return
+		return nil
 	}
 
 	c.IsOpened = true
 	c.Show()
 
 	if c.IsBomb {
-		// TODO
-		return
+		return errors.New("bomb! you dead.")
 	}
 
 	if c.BombCount() == 0 {
@@ -74,6 +74,7 @@ func (c *Cell) Open() {
 			nc.Open()
 		}
 	}
+	return nil
 }
 
 type Map struct {
@@ -183,11 +184,18 @@ func main() {
 					currentCell = currentCell.Neighbors[DirRight]
 				}
 			case ' ':
-				currentCell.Open()
+				err := currentCell.Open()
+				if err != nil {
+					term.SetCursor(1, rows + 1)
+					term.ResetColor()
+					term.SetForegroundColor(term.ColorRed)
+					fmt.Println(err)
+					break Loop
+				}
 			}
 
 		}
-		term.SetCursor(1, rows + 1)
+		term.SetCursor(1, rows + 2)
 		term.ResetColor()
 	})
 }
