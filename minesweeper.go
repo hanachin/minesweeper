@@ -215,8 +215,9 @@ type Status struct {
 	Width int
 }
 
-func (s *Status) ShowMessage(m string) {
+func (s *Status) ShowMessage(m string, color int) {
 	term.ResetColor()
+	term.SetForegroundColor(color)
 	term.SetCursor(s.X + 1, s.Y + 1)
 	fmt.Printf("%-" + strconv.Itoa(s.Width) + "s\n", m)
 }
@@ -257,7 +258,7 @@ func (g *Game) Start() {
 
 			switch term.Getc() {
 			case 'q':
-				g.Status.ShowMessage("bye bye!")
+				g.Status.ShowMessage("bye bye!", term.ColorBlack)
 				break Loop
 			case 'w':
 				g.Move(DirUp)
@@ -270,10 +271,7 @@ func (g *Game) Start() {
 			case ' ':
 				err := g.CurrentCell.Open()
 				if err != nil {
-					term.SetCursor(g.Status.X + 1, g.Status.Y + 1)
-					term.ResetColor()
-					term.SetForegroundColor(term.ColorRed)
-					fmt.Println(err)
+					g.Status.ShowMessage(err.Error(), term.ColorRed)
 					break Loop
 				}
 			case 'f':
