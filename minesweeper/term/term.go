@@ -8,19 +8,6 @@ import (
 	"github.com/k0kubun/go-termios"
 )
 
-const (
-	ColorBlack = iota
-	ColorRed
-	ColorGreen
-	ColorYellow
-	ColorBlue
-	ColorMagenta
-	ColorCyan
-	ColorWhite
-)
-
-type Color int
-
 func Clear() {
 	fmt.Print("\x1B[2J")
 }
