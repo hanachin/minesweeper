@@ -45,6 +45,7 @@ func (g *Game) Start() {
 	term.WithGameMode(func () {
 		g.CurrentCell = g.Map.StartPoint()
 		g.Map.Show()
+		g.ShowMessage("help: wasd(move) space(open) f(flag)", term.ColorBlack)
 	Loop:
 		for {
 			g.ShowDangerSignCount()
