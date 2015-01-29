@@ -248,7 +248,9 @@ func main() {
 					break Loop
 				}
 			case 'f':
-				currentCell.ToggleDangerSign()
+				if !currentCell.IsOpened {
+					currentCell.ToggleDangerSign()
+				}
 			}
 
 		}
