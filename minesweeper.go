@@ -56,6 +56,26 @@ func (c *Cell) Show() {
 
 }
 
+func (c *Cell) Open() {
+	if c.IsOpened {
+		return
+	}
+
+	c.IsOpened = true
+	c.Show()
+
+	if c.IsBomb {
+		// TODO
+		return
+	}
+
+	if c.BombCount() == 0 {
+		for _, nc := range c.Neighbors {
+			nc.Open()
+		}
+	}
+}
+
 type Map struct {
 	Cells []*Cell
 }
@@ -162,7 +182,10 @@ func main() {
 				if (currentCell.Neighbors[DirRight] != nil) {
 					currentCell = currentCell.Neighbors[DirRight]
 				}
+			case ' ':
+				currentCell.Open()
 			}
+
 		}
 		term.SetCursor(1, rows + 1)
 		term.ResetColor()
