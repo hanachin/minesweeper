@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
+	"strconv"
 	"time"
 	"./term"
 )
@@ -211,12 +212,13 @@ func (m *Map) StartPoint() *Cell {
 type Status struct {
 	X int
 	Y int
+	Width int
 }
 
 func (s *Status) ShowMessage(m string) {
 	term.ResetColor()
 	term.SetCursor(s.X + 1, s.Y + 1)
-	fmt.Println(m)
+	fmt.Printf("%-" + strconv.Itoa(s.Width) + "s\n", m)
 }
 
 type Game struct {
@@ -236,6 +238,7 @@ func (g *Game) SetSquareMap(cols, rows, bomb int) {
 	m.PutBomb(bomb)
 	g.Map = m
 	g.Status.Y = rows
+	g.Status.Width = cols
 }
 
 func (g *Game) Move(dir int) {
