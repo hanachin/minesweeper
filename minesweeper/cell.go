@@ -45,7 +45,7 @@ func (c *Cell) DebugShow() {
 
 	if c.DangerSign {
 		term.SetForegroundColor(term.ColorRed)
-		fmt.Print("f")
+		fmt.Print(">")
 	} else if c.IsBomb {
 		term.SetForegroundColor(term.ColorCyan)
 		fmt.Print("X")
@@ -79,7 +79,7 @@ func (c *Cell) Show() {
 	if !c.IsOpened {
 		if c.DangerSign {
 			term.SetForegroundColor(term.ColorRed)
-			fmt.Print("f")
+			fmt.Print(">")
 		} else {
 			fmt.Print(" ")
 		}
