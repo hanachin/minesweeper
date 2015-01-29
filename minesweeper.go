@@ -232,6 +232,12 @@ func (g *Game) SetSquareMap(cols, rows, bomb int) {
 	g.Status.Y = rows
 }
 
+func (g *Game) Move(dir int) {
+	if (g.CurrentCell.Neighbors[dir] != nil) {
+		g.CurrentCell = g.CurrentCell.Neighbors[dir]
+	}
+}
+
 func (g *Game) Start() {
 	term.WithGameMode(func () {
 		g.CurrentCell = g.Map.StartPoint()
@@ -245,22 +251,13 @@ func (g *Game) Start() {
 			case 'q':
 				break Loop
 			case 'w':
-				if (g.CurrentCell.Neighbors[DirUp] != nil) {
-					g.CurrentCell = g.CurrentCell.Neighbors[DirUp]
-				}
+				g.Move(DirUp)
 			case 'a':
-				if (g.CurrentCell.Neighbors[DirLeft] != nil) {
-					g.CurrentCell = g.CurrentCell.Neighbors[DirLeft]
-				}
+				g.Move(DirLeft)
 			case 's':
-				if (g.CurrentCell.Neighbors[DirBottm] != nil) {
-					g.CurrentCell = g.CurrentCell.Neighbors[DirBottm]
-				}
+				g.Move(DirBottm)
 			case 'd':
-				if (g.CurrentCell.Neighbors[DirRight] != nil) {
-					g.CurrentCell = g.CurrentCell.Neighbors[DirRight]
-				}
-
+				g.Move(DirRight)
 			case ' ':
 				err := g.CurrentCell.Open()
 				if err != nil {
