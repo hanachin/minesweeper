@@ -6,6 +6,7 @@ import (
 	"./term"
 )
 
+// FIXME
 var debug bool = false
 
 type Cell struct {
