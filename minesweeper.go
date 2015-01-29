@@ -22,6 +22,7 @@ const (
 type Cell struct {
 	IsBomb bool
 	IsOpened bool
+	DangerSign bool
 	X int
 	Y int
 	Neighbors map[int]*Cell
@@ -49,6 +50,7 @@ func (c *Cell) Show() {
 	}
 	term.SetForegroundColor(term.ColorRed)
 	term.SetCursor(c.X + 1, c.Y + 1)
+
 	if c.IsBomb {
 		term.Print("f")
 	} else {
@@ -75,6 +77,11 @@ func (c *Cell) Open() error {
 		}
 	}
 	return nil
+}
+
+func (c *Cell) ToggleDangerSign() {
+	c.DangerSign = !c.DangerSign
+	c.Show()
 }
 
 type Map struct {
@@ -183,6 +190,7 @@ func main() {
 				if (currentCell.Neighbors[DirRight] != nil) {
 					currentCell = currentCell.Neighbors[DirRight]
 				}
+
 			case ' ':
 				err := currentCell.Open()
 				if err != nil {
@@ -192,6 +200,8 @@ func main() {
 					fmt.Println(err)
 					break Loop
 				}
+			case 'f':
+				currentCell.ToggleDangerSign()
 			}
 
 		}
