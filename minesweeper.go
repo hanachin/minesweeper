@@ -7,22 +7,33 @@ import (
 	"./term"
 )
 
+const (
+	DirUp = iota
+	DirUpperRight
+	DirRight
+	DirLowerRight
+	DirBottm
+	DirLowerLeft
+	DirLeft
+	DirUpperLeft
+)
+
 type Cell struct {
 	IsBomb bool
 	IsOpened bool
 	X int
 	Y int
-	Neighbors []*Cell
+	Neighbors map[int]*Cell
 }
 
-func (c1 *Cell) Connect(c2 *Cell) {
-	c1.Neighbors = append(c1.Neighbors, c2)
+func (c1 *Cell) Connect(dir int, c2 *Cell) {
+	c1.Neighbors[dir] = c2
 }
 
 func (c *Cell) BombCount() int {
 	count := 0
-	for i := 0; i < len(c.Neighbors); i++ {
-		if (c.Neighbors[i].IsBomb) {
+	for _, nc := range c.Neighbors {
+		if (nc.IsBomb) {
 			count += 1
 		}
 	}
@@ -61,37 +72,38 @@ func NewSquareMap(cols, rows int) *Map {
 			c := &cells[y][x]
 			c.X = x
 			c.Y = y
+			c.Neighbors = map[int]*Cell{}
 			// up
 			if (y - 1 >= 0) {
-				c.Connect(&cells[y - 1][x])
+				c.Connect(DirUp, &cells[y - 1][x])
 			}
 			// up right
 			if (y - 1 >= 0 && x + 1 < cols) {
-				c.Connect(&cells[y - 1][x + 1])
+				c.Connect(DirUpperRight, &cells[y - 1][x + 1])
 			}
 			// right
 			if (x + 1 < cols) {
-				c.Connect(&cells[y][x + 1])
+				c.Connect(DirRight, &cells[y][x + 1])
 			}
 			// down right
 			if (x + 1 < cols && y + 1 < rows) {
-				c.Connect(&cells[y + 1][x + 1])
+				c.Connect(DirLowerRight, &cells[y + 1][x + 1])
 			}
 			// down
 			if (y + 1 < rows) {
-				c.Connect(&cells[y + 1][x])
+				c.Connect(DirBottm, &cells[y + 1][x])
 			}
 			// down left
 			if (y + 1 < rows && x - 1 >= 0) {
-				c.Connect(&cells[y + 1][x - 1])
+				c.Connect(DirLowerLeft, &cells[y + 1][x - 1])
 			}
 			// left
 			if (x - 1 >= 0) {
-				c.Connect(&cells[y][x - 1])
+				c.Connect(DirLeft, &cells[y][x - 1])
 			}
 			// left up
 			if (x - 1 >= 0 && y - 1 >= 0) {
-				c.Connect(&cells[y - 1][x - 1])
+				c.Connect(DirUpperLeft, &cells[y - 1][x - 1])
 			}
 			m.Cells[y * cols + x] = c
 		}
@@ -117,42 +129,38 @@ func (m *Map) Show() {
 	}
 }
 
-type CursorPoint struct {
-	X int
-	Y int
-}
-
 func main() {
 	term.WithGameMode(func () {
-		cursor := new(CursorPoint)
 		cols := 4
 		rows := 7
 		m := NewSquareMap(cols, rows)
 		m.PutBomb(5)
 		m.Show()
+
+		currentCell := m.Cells[0]
 	Loop:
 		for {
-			term.SetCursor(cursor.X + 1, cursor.Y + 1)
+			term.SetCursor(currentCell.X + 1, currentCell.Y + 1)
 			c := term.Getc()
 
 			switch c {
 			case 'q':
 				break Loop
 			case 'w':
-				if (cursor.Y - 1 >= 0) {
-					cursor.Y -= 1
+				if (currentCell.Neighbors[DirUp] != nil) {
+					currentCell = currentCell.Neighbors[DirUp]
 				}
 			case 'a':
-				if (cursor.X - 1 >= 0) {
-					cursor.X -= 1
+				if (currentCell.Neighbors[DirLeft] != nil) {
+					currentCell = currentCell.Neighbors[DirLeft]
 				}
 			case 's':
-				if (cursor.Y + 1 < rows) {
-					cursor.Y += 1
+				if (currentCell.Neighbors[DirBottm] != nil) {
+					currentCell = currentCell.Neighbors[DirBottm]
 				}
 			case 'd':
-				if (cursor.X + 1 < cols) {
-					cursor.X += 1
+				if (currentCell.Neighbors[DirRight] != nil) {
+					currentCell = currentCell.Neighbors[DirRight]
 				}
 			}
 		}
