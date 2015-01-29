@@ -254,6 +254,7 @@ func (g *Game) Start() {
 
 			switch term.Getc() {
 			case 'q':
+				g.Status.ShowMessage("bye bye!")
 				break Loop
 			case 'w':
 				g.Move(DirUp)
@@ -279,7 +280,6 @@ func (g *Game) Start() {
 			}
 
 		}
-		g.Status.ShowMessage("bye bye!")
 	})
 }
 
