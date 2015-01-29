@@ -8,6 +8,8 @@ import (
 	"./term"
 )
 
+var debug bool = true
+
 const (
 	DirUp = iota
 	DirUpperRight
@@ -42,19 +44,32 @@ func (c *Cell) BombCount() int {
 	return count
 }
 
-func (c *Cell) Show() {
+func (c *Cell) DebugShow() {
 	if c.IsOpened {
+		term.SetForegroundColor(term.ColorBlack)
 		term.SetBackgroundColor(term.ColorWhite)
 	} else {
+		term.SetForegroundColor(term.ColorWhite)
 		term.SetBackgroundColor(term.ColorBlack)
 	}
-	term.SetForegroundColor(term.ColorRed)
+
 	term.SetCursor(c.X + 1, c.Y + 1)
 
-	if c.IsBomb {
-		term.Print("f")
+	if c.DangerSign {
+		term.SetForegroundColor(term.ColorRed)
+		fmt.Print("f")
+	} else if c.IsBomb {
+		term.SetForegroundColor(term.ColorCyan)
+		fmt.Print("b")
 	} else {
 		fmt.Printf("%d", c.BombCount())
+	}
+}
+
+func (c *Cell) Show() {
+	if debug {
+		c.DebugShow()
+		return
 	}
 
 }
