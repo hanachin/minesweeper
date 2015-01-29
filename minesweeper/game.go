@@ -8,6 +8,8 @@ type Game struct {
 	CurrentCell *Cell
 	Map *Map
 	Status *Status
+	Bomb int
+	DangerSignCount int
 }
 
 func NewGame() *Game {
@@ -19,6 +21,7 @@ func NewGame() *Game {
 func (g *Game) SetSquareMap(cols, rows, bomb int) {
 	m := NewSquareMap(cols, rows)
 	m.PutBomb(bomb)
+	g.Bomb = bomb
 	g.Map = m
 	g.Status.Y = rows
 	g.Status.Width = cols
@@ -59,6 +62,11 @@ func (g *Game) Start() {
 			case 'f':
 				if !g.CurrentCell.IsOpened {
 					g.CurrentCell.ToggleDangerSign()
+					if g.CurrentCell.DangerSign {
+						g.DangerSignCount += 1
+					} else {
+						g.DangerSignCount -= 1
+					}
 				}
 			}
 
