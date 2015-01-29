@@ -8,7 +8,7 @@ import (
 	"./term"
 )
 
-var debug bool = true
+var debug bool = false
 
 const (
 	DirUp = iota
@@ -70,6 +70,38 @@ func (c *Cell) Show() {
 	if debug {
 		c.DebugShow()
 		return
+	}
+
+	term.SetCursor(c.X + 1, c.Y + 1)
+
+	if c.IsOpened {
+		term.SetForegroundColor(term.ColorBlack)
+		term.SetBackgroundColor(term.ColorWhite)
+	} else {
+		term.SetForegroundColor(term.ColorWhite)
+		term.SetBackgroundColor(term.ColorBlack)
+	}
+
+	if !c.IsOpened {
+		if c.DangerSign {
+			term.SetForegroundColor(term.ColorRed)
+			fmt.Print("f")
+		} else {
+			fmt.Print(" ")
+		}
+		return
+	}
+
+	if c.DangerSign {
+		term.SetForegroundColor(term.ColorRed)
+		fmt.Print("f")
+	} else if c.IsBomb {
+		term.SetForegroundColor(term.ColorCyan)
+		fmt.Print("b")
+	} else if c.BombCount() == 0 {
+		fmt.Print(" ")
+	} else {
+		fmt.Printf("%d", c.BombCount())
 	}
 
 }
