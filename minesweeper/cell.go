@@ -48,8 +48,14 @@ func (c *Cell) DebugShow() {
 		fmt.Print("f")
 	} else if c.IsBomb {
 		term.SetForegroundColor(term.ColorCyan)
-		fmt.Print("b")
+		fmt.Print("X")
 	} else {
+		colorMap := []term.Color{ term.ColorWhite,
+			term.ColorCyan, term.ColorBlue, term.ColorGreen,
+			term.ColorYellow, term.ColorMagenta, term.ColorWhite,
+			term.ColorWhite, term.ColorWhite}
+		bombCount := c.BombCount()
+		term.SetForegroundColor(colorMap[bombCount])
 		fmt.Printf("%d", c.BombCount())
 	}
 }
@@ -89,7 +95,13 @@ func (c *Cell) Show() {
 	} else if c.BombCount() == 0 {
 		fmt.Print(" ")
 	} else {
-		fmt.Printf("%d", c.BombCount())
+		colorMap := []term.Color{ term.ColorBlack,
+			term.ColorCyan, term.ColorBlue, term.ColorGreen,
+			term.ColorYellow, term.ColorMagenta, term.ColorBlack,
+			term.ColorBlack, term.ColorBlack}
+		bombCount := c.BombCount()
+		term.SetForegroundColor(colorMap[bombCount])
+		fmt.Printf("%d", bombCount)
 	}
 
 }
