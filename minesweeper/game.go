@@ -33,6 +33,10 @@ func (g *Game) Move(dir int) {
 	}
 }
 
+func (g *Game) ShowMessage(m string, color int) {
+	g.Status.ShowMessage(m, color)
+}
+
 func (g *Game) Start() {
 	term.WithGameMode(func () {
 		g.CurrentCell = g.Map.StartPoint()
@@ -43,7 +47,7 @@ func (g *Game) Start() {
 
 			switch term.Getc() {
 			case 'q':
-				g.Status.ShowMessage("bye bye!", term.ColorBlack)
+				g.ShowMessage("bye bye!", term.ColorBlack)
 				break Loop
 			case 'w':
 				g.Move(DirUp)
@@ -56,7 +60,7 @@ func (g *Game) Start() {
 			case ' ':
 				err := g.CurrentCell.Open()
 				if err != nil {
-					g.Status.ShowMessage(err.Error(), term.ColorRed)
+					g.ShowMessage(err.Error(), term.ColorRed)
 					break Loop
 				}
 			case 'f':
