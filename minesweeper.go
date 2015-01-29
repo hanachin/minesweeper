@@ -45,6 +45,8 @@ func (c *Cell) BombCount() int {
 }
 
 func (c *Cell) DebugShow() {
+	term.SetCursor(c.X + 1, c.Y + 1)
+
 	if c.IsOpened {
 		term.SetForegroundColor(term.ColorBlack)
 		term.SetBackgroundColor(term.ColorWhite)
@@ -52,8 +54,6 @@ func (c *Cell) DebugShow() {
 		term.SetForegroundColor(term.ColorWhite)
 		term.SetBackgroundColor(term.ColorBlack)
 	}
-
-	term.SetCursor(c.X + 1, c.Y + 1)
 
 	if c.DangerSign {
 		term.SetForegroundColor(term.ColorRed)
