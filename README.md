@@ -1,6 +1,8 @@
 Minesweeper
 ===========
 
+![screenshot](screenshot.png)
+
 Installation
 ------------
 
