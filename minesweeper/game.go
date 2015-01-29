@@ -45,6 +45,10 @@ func (g *Game) ShowDangerSignCount() {
 	g.Status.ShowDangerSignCount(g.DangerSignCount, g.Bomb)
 }
 
+func (g *Game) IsClear() bool {
+	return g.Bomb + g.Map.CountOpenedCells() == g.Map.CountCells()
+}
+
 func (g *Game) Start() {
 	term.WithGameMode(func () {
 		g.CurrentCell = g.Map.StartPoint()
@@ -54,6 +58,11 @@ func (g *Game) Start() {
 		for {
 			g.ShowDangerSignCount()
 			term.SetCursor(g.CurrentCell.X + 1, g.CurrentCell.Y + 1)
+
+			if g.IsClear() {
+				g.ShowMessage("Congratulations!", term.ColorYellow)
+				break Loop
+			}
 
 			switch term.Getc() {
 			case 'q':

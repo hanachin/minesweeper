@@ -82,3 +82,17 @@ func (m *Map) Show() {
 func (m *Map) StartPoint() *Cell {
 	return m.Cells[0]
 }
+
+func (m *Map) CountOpenedCells() int {
+	openedCells := 0
+	for _, c := range m.Cells {
+		if c.IsOpened {
+			openedCells += 1
+		}
+	}
+	return openedCells
+}
+
+func (m *Map) CountCells() int {
+	return len(m.Cells)
+}
