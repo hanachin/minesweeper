@@ -204,15 +204,37 @@ func (m *Map) Show() {
 	}
 }
 
-func main() {
-	term.WithGameMode(func () {
-		cols := 40
-		rows := 20
-		m := NewSquareMap(cols, rows)
-		m.PutBomb(100)
-		m.Show()
+func (m *Map) StartPoint() *Cell {
+	return m.Cells[0]
+}
 
-		currentCell := m.Cells[0]
+type Status struct {
+	X int
+	Y int
+}
+
+type Game struct {
+	Map *Map
+	Status *Status
+}
+
+func NewGame() *Game {
+	g := new(Game)
+	g.Status = new(Status)
+	return g
+}
+
+func (g *Game) SetSquareMap(cols, rows, bomb int) {
+	m := NewSquareMap(cols, rows)
+	m.PutBomb(bomb)
+	g.Map = m
+	g.Status.Y = rows
+}
+
+func (g *Game) Start() {
+	term.WithGameMode(func () {
+		currentCell := g.Map.StartPoint()
+		g.Map.Show()
 	Loop:
 		for {
 			term.SetCursor(currentCell.X + 1, currentCell.Y + 1)
@@ -241,7 +263,7 @@ func main() {
 			case ' ':
 				err := currentCell.Open()
 				if err != nil {
-					term.SetCursor(1, rows + 1)
+					term.SetCursor(g.Status.X + 1, g.Status.Y + 1)
 					term.ResetColor()
 					term.SetForegroundColor(term.ColorRed)
 					fmt.Println(err)
@@ -254,7 +276,13 @@ func main() {
 			}
 
 		}
-		term.SetCursor(1, rows + 2)
+		term.SetCursor(g.Status.X + 1, g.Status.Y + 2)
 		term.ResetColor()
 	})
+}
+
+func main() {
+	g := NewGame()
+	g.SetSquareMap(40, 20, 100)
+	g.Start()
 }
