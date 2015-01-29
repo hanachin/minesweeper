@@ -33,7 +33,7 @@ func (g *Game) Move(dir int) {
 	}
 }
 
-func (g *Game) ShowMessage(m string, color int) {
+func (g *Game) ShowMessage(m string, color term.Color) {
 	g.Status.ShowMessage(m, color)
 }
 

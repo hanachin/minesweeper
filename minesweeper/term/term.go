@@ -19,6 +19,8 @@ const (
 	ColorWhite
 )
 
+type Color int
+
 func Clear() {
 	fmt.Print("\x1B[2J")
 }
@@ -31,11 +33,11 @@ func ResetColor() {
 	fmt.Print("\x1B[m")
 }
 
-func SetForegroundColor(c int) {
+func SetForegroundColor(c Color) {
 	fmt.Printf("\x1B[%dm", c + 30)
 }
 
-func SetBackgroundColor(c int) {
+func SetBackgroundColor(c Color) {
 	fmt.Printf("\x1B[%dm", c + 40)
 }
 
