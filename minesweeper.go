@@ -206,10 +206,10 @@ func (m *Map) Show() {
 
 func main() {
 	term.WithGameMode(func () {
-		cols := 4
-		rows := 7
+		cols := 40
+		rows := 20
 		m := NewSquareMap(cols, rows)
-		m.PutBomb(5)
+		m.PutBomb(100)
 		m.Show()
 
 		currentCell := m.Cells[0]
