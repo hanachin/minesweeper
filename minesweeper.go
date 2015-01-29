@@ -213,6 +213,12 @@ type Status struct {
 	Y int
 }
 
+func (s *Status) ShowMessage(m string) {
+	term.ResetColor()
+	term.SetCursor(s.X + 1, s.Y + 1)
+	fmt.Println(m)
+}
+
 type Game struct {
 	CurrentCell *Cell
 	Map *Map
@@ -273,8 +279,7 @@ func (g *Game) Start() {
 			}
 
 		}
-		term.SetCursor(g.Status.X + 1, g.Status.Y + 2)
-		term.ResetColor()
+		g.Status.ShowMessage("bye bye!")
 	})
 }
 
