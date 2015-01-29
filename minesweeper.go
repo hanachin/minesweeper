@@ -214,6 +214,7 @@ type Status struct {
 }
 
 type Game struct {
+	CurrentCell *Cell
 	Map *Map
 	Status *Status
 }
@@ -233,35 +234,35 @@ func (g *Game) SetSquareMap(cols, rows, bomb int) {
 
 func (g *Game) Start() {
 	term.WithGameMode(func () {
-		currentCell := g.Map.StartPoint()
+		g.CurrentCell = g.Map.StartPoint()
 		g.Map.Show()
 	Loop:
 		for {
-			term.SetCursor(currentCell.X + 1, currentCell.Y + 1)
+			term.SetCursor(g.CurrentCell.X + 1, g.CurrentCell.Y + 1)
 			c := term.Getc()
 
 			switch c {
 			case 'q':
 				break Loop
 			case 'w':
-				if (currentCell.Neighbors[DirUp] != nil) {
-					currentCell = currentCell.Neighbors[DirUp]
+				if (g.CurrentCell.Neighbors[DirUp] != nil) {
+					g.CurrentCell = g.CurrentCell.Neighbors[DirUp]
 				}
 			case 'a':
-				if (currentCell.Neighbors[DirLeft] != nil) {
-					currentCell = currentCell.Neighbors[DirLeft]
+				if (g.CurrentCell.Neighbors[DirLeft] != nil) {
+					g.CurrentCell = g.CurrentCell.Neighbors[DirLeft]
 				}
 			case 's':
-				if (currentCell.Neighbors[DirBottm] != nil) {
-					currentCell = currentCell.Neighbors[DirBottm]
+				if (g.CurrentCell.Neighbors[DirBottm] != nil) {
+					g.CurrentCell = g.CurrentCell.Neighbors[DirBottm]
 				}
 			case 'd':
-				if (currentCell.Neighbors[DirRight] != nil) {
-					currentCell = currentCell.Neighbors[DirRight]
+				if (g.CurrentCell.Neighbors[DirRight] != nil) {
+					g.CurrentCell = g.CurrentCell.Neighbors[DirRight]
 				}
 
 			case ' ':
-				err := currentCell.Open()
+				err := g.CurrentCell.Open()
 				if err != nil {
 					term.SetCursor(g.Status.X + 1, g.Status.Y + 1)
 					term.ResetColor()
@@ -270,8 +271,8 @@ func (g *Game) Start() {
 					break Loop
 				}
 			case 'f':
-				if !currentCell.IsOpened {
-					currentCell.ToggleDangerSign()
+				if !g.CurrentCell.IsOpened {
+					g.CurrentCell.ToggleDangerSign()
 				}
 			}
 
