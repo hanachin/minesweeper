@@ -27,6 +27,16 @@ func (g *Game) SetRectangleMap(cols, rows, bomb int) {
 	g.Status.Width = cols
 }
 
+func (g *Game) SetTemplateMap(template []string, bomb int) {
+	m := NewTemplateMap(template)
+	m.PutBomb(bomb)
+	g.Bomb = bomb
+	g.Map = m
+	g.Status.Y = len(template)
+	g.Status.Width = len(template[0])
+}
+
+
 func (g *Game) Move(dir int) {
 	if (g.CurrentCell.Neighbors[dir] != nil) {
 		g.CurrentCell = g.CurrentCell.Neighbors[dir]
