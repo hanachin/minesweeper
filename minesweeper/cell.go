@@ -85,7 +85,7 @@ func (c *Cell) Show() {
 		fmt.Print("f")
 	} else if c.IsBomb {
 		term.SetForegroundColor(term.ColorCyan)
-		fmt.Print("b")
+		fmt.Print("X")
 	} else if c.BombCount() == 0 {
 		fmt.Print(" ")
 	} else {
