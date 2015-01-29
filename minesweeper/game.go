@@ -37,6 +37,10 @@ func (g *Game) ShowMessage(m string, color term.Color) {
 	g.Status.ShowMessage(m, color)
 }
 
+func (g *Game) ShowHelp() {
+	g.Status.ShowHelp()
+}
+
 func (g *Game) ShowDangerSignCount() {
 	g.Status.ShowDangerSignCount(g.DangerSignCount, g.Bomb)
 }
@@ -45,7 +49,7 @@ func (g *Game) Start() {
 	term.WithGameMode(func () {
 		g.CurrentCell = g.Map.StartPoint()
 		g.Map.Show()
-		g.ShowMessage("help: wasd(move) space(open) f(flag)", term.ColorBlack)
+		g.ShowHelp()
 	Loop:
 		for {
 			g.ShowDangerSignCount()
