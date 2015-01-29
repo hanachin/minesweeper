@@ -245,9 +245,8 @@ func (g *Game) Start() {
 	Loop:
 		for {
 			term.SetCursor(g.CurrentCell.X + 1, g.CurrentCell.Y + 1)
-			c := term.Getc()
 
-			switch c {
+			switch term.Getc() {
 			case 'q':
 				break Loop
 			case 'w':
